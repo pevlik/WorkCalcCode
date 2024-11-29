@@ -3,14 +3,12 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Globalization;
-
+using System.Collections.Generic;
 
 namespace EffortCalculator
 {
     public partial class MainForm : Form
     {
-        private double isExponentNumeric;
-
         public MainForm()
         {
             InitializeComponent();
@@ -90,20 +88,53 @@ namespace EffortCalculator
                 return;
             }
 
+            // Получаем базовую формулу в зависимости от водоизмещения
             string formula = D <= selectedShip.MaxDisplacement ? selectedShip.FormulaLow : selectedShip.FormulaHigh;
             string formulaWithReplacements = ReplacePowerOperator(formula, D);
 
             try
             {
-                double result = CalculateFormula(formulaWithReplacements);
-                ResultForm resultForm = new ResultForm(formulaWithReplacements, result.ToString());
+                // Вычисляем базовое время
+                double baseResult = CalculateFormula(formulaWithReplacements);
+
+                // Получаем коэффициент сложности (произведение всех коэффициентов)
+                double totalCoefficient = 1.0;
+                foreach (DataGridViewRow row in coefficientGrid.Rows)
+                {
+                    if (row.Cells[1].Value != null && !string.IsNullOrWhiteSpace(row.Cells[1].Value.ToString()))
+                    {
+                        if (double.TryParse(row.Cells[1].Value.ToString(), out double coef))
+                        {
+                            totalCoefficient *= coef;
+                        }
+                    }
+                }
+
+                // Применяем коэффициент сложности к базовому результату
+                double totalResult = baseResult * totalCoefficient;
+
+                // Создаем массив для хранения детальных результатов
+                var detailedResults = new List<(string Name, double Percentage, double Hours)>();
+
+                // Вычисляем время для каждого вида работ
+                foreach (DataGridViewRow row in percentageGrid.Rows)
+                {
+                    string workName = row.Cells[0].Value?.ToString() ?? "";
+                    if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
+                    {
+                        double hours = totalResult * percentage;
+                        detailedResults.Add((workName, percentage, hours));
+                    }
+                }
+
+                // Показываем форму с результатами
+                ResultForm resultForm = new ResultForm(formulaWithReplacements, totalResult, detailedResults.ToArray());
                 resultForm.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error in calculation: {ex.Message}", "Calculation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         public double CalculateFormula(string formula)

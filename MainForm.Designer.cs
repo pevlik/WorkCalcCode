@@ -39,7 +39,7 @@ namespace EffortCalculator
             this.percentageLabel = new Label { Text = "Процентное соотношение работ", AutoSize = true, TextAlign = ContentAlignment.MiddleLeft, Dock = DockStyle.Fill };
             this.resultLabel = new Label { Text = "", AutoSize = true };
             this.calculateButton = new Button { Text = "Расчитать",  Anchor = AnchorStyles.Right };
-            this.editShipsButton = new Button { Text = "Список судов", AutoSize = true};
+            this.editShipsButton = new Button { Text = "Список судов", AutoSize = true };
 
             // Таблица для процентного соотношения работ
             this.percentageGrid = new DataGridView
