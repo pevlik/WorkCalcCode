@@ -1,0 +1,14 @@
+d:\VS repos\WorkCalcCode\bin\Debug\net8.0-windows\EffortCalculator.exe
+d:\VS repos\WorkCalcCode\bin\Debug\net8.0-windows\EffortCalculator.deps.json
+d:\VS repos\WorkCalcCode\bin\Debug\net8.0-windows\EffortCalculator.runtimeconfig.json
+d:\VS repos\WorkCalcCode\bin\Debug\net8.0-windows\EffortCalculator.dll
+d:\VS repos\WorkCalcCode\bin\Debug\net8.0-windows\EffortCalculator.pdb
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.GeneratedMSBuildEditorConfig.editorconfig
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.AssemblyInfoInputs.cache
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.AssemblyInfo.cs
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.csproj.CoreCompileInputs.cache
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.dll
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\refint\EffortCalculator.dll
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.pdb
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\EffortCalculator.genruntimeconfig.cache
+d:\VS repos\WorkCalcCode\obj\Debug\net8.0-windows\ref\EffortCalculator.dll
