@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EffortCalculator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bcb2c62036da9a0df58b98473a5e470d396b502")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d99c976e3202f386916da1d84fa99d3e41f3128")]
 [assembly: System.Reflection.AssemblyProductAttribute("EffortCalculator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EffortCalculator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
