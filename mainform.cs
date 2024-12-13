@@ -7,189 +7,253 @@ using System.Collections.Generic;
 
 namespace EffortCalculator
 {
-    public partial class MainForm : Form
-    {
-        public MainForm()
-        {
-            InitializeComponent();
-            InitializeComboBoxAutoComplete();
-        }
+	public partial class MainForm : Form
+	{
+		public MainForm()
+		{
+			InitializeComponent();
+			InitializeComboBoxAutoComplete();
+		}
 
-        private void InitializeComboBoxAutoComplete()
-        {
-        
-            var codes = Program.shipTypes.Select(ship => ship.Code).Distinct().ToArray();
-            codeEntry.Items.AddRange(codes);
+		private void InitializeComboBoxAutoComplete()
+		{
+		
+			var codes = Program.shipTypes.Select(ship => ship.Code).Distinct().ToArray();
+            Console.WriteLine($"Codes: {string.Join(", ", codes)}");
+			codeEntry.Items.AddRange(codes);
+			var names = Program.shipTypes.Select(ship => ship.Name).Distinct().ToArray();
+            Console.WriteLine($"Names: {string.Join(", ", names)}");
+			nameEntry.Items.AddRange(names);
+			codeEntry.SelectedIndexChanged += CodeEntry_SelectedIndexChanged;
+			nameEntry.SelectedIndexChanged += NameEntry_SelectedIndexChanged;
 
-            
-            var names = Program.shipTypes.Select(ship => ship.Name).Distinct().ToArray();
-            nameEntry.Items.AddRange(names);
+			// Открываем выпадающий список при фокусе
+			codeEntry.Enter += (sender, e) => codeEntry.DroppedDown = true;
+			nameEntry.Enter += (sender, e) => nameEntry.DroppedDown = true;
+		}
 
-            
-            codeEntry.SelectedIndexChanged += CodeEntry_SelectedIndexChanged;
-            nameEntry.SelectedIndexChanged += NameEntry_SelectedIndexChanged;
+		private void CodeEntry_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Получаем выбранный код
+			string selectedCode = codeEntry.Text;
+			// Ищем соответствующее судно и заполняем nameEntry
+			var matchingShip = Program.shipTypes.FirstOrDefault(ship => ship.Code == selectedCode);
+			if (matchingShip != null)
+			{
+				nameEntry.Text = matchingShip.Name;
+			}
+		}
 
-            // Открываем выпадающий список при фокусе
-            codeEntry.Enter += (sender, e) => codeEntry.DroppedDown = true;
-            nameEntry.Enter += (sender, e) => nameEntry.DroppedDown = true;
-        }
+		private void NameEntry_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Получаем выбранное имя судна
+			string selectedName = nameEntry.Text;
+			// Ищем соответствующее судно и заполняем codeEntry
+			var matchingShip = Program.shipTypes.FirstOrDefault(ship => ship.Name == selectedName);
+			if (matchingShip != null)
+			{
+				codeEntry.Text = matchingShip.Code;
+			}
+		}
 
-        private void CodeEntry_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Получаем выбранный код
-            string selectedCode = codeEntry.Text;
-            // Ищем соответствующее судно и заполняем nameEntry
-            var matchingShip = Program.shipTypes.FirstOrDefault(ship => ship.Code == selectedCode);
-            if (matchingShip != null)
-            {
-                nameEntry.Text = matchingShip.Name;
-            }
-        }
+		private void DeleteRowButton1_Click(object sender, EventArgs e)
+		{
+			DeleteRowSelected(coefficientGrid);
+		}
 
-        private void NameEntry_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Получаем выбранное имя судна
-            string selectedName = nameEntry.Text;
-            // Ищем соответствующее судно и заполняем codeEntry
-            var matchingShip = Program.shipTypes.FirstOrDefault(ship => ship.Name == selectedName);
-            if (matchingShip != null)
-            {
-                codeEntry.Text = matchingShip.Code;
-            }
-        }
+		private void DeleteRowButton2_Click(object sender, EventArgs e)
+		{
+			DeleteRowSelected(percentageGrid);
+		}
 
-        private void EditShipsButton_Click(object sender, EventArgs e)
-        {
-            EditShipsForm editForm = new EditShipsForm();
-            editForm.ShowDialog();
-        }
+		private void DeleteRowSelected(DataGridView grid)
+		{
+			// Получаем индекс выделенной строки
+			int rowIndex = grid.CurrentCell?.RowIndex ?? -1;
 
-        private void CalculateButton_Click(object sender, EventArgs e)
-        {
-            if (!double.TryParse(DEntry.Text, out double D))
-            {
-                MessageBox.Show("Invalid displacement D", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+			if (rowIndex >= 0 && rowIndex < grid.Rows.Count)
+			{
+				grid.Rows.RemoveAt(rowIndex);
+			}
 
-            string shipCode = codeEntry.Text;
-            string shipName = nameEntry.Text;
+		}
 
-            ShipType selectedShip = Program.shipTypes.FirstOrDefault(ship => ship.Code == shipCode || ship.Name == shipName);
-            if (selectedShip == null)
-            {
-                MessageBox.Show("Тип судна не найден", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+		private void AddRowButton1_Click(object sender, EventArgs e)
+		{
+			AddRowAfterSelected(coefficientGrid);
+		}		
+		
+		private void AddRowButton2_Click(object sender, EventArgs e)
+		{
+			AddRowAfterSelected(percentageGrid);
+		}
 
-            if (string.IsNullOrEmpty(selectedShip.FormulaLow) || string.IsNullOrEmpty(selectedShip.FormulaHigh))
-            {
-                MessageBox.Show("Формулы не заданы для выбранного судна", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+		private void AddRowAfterSelected(DataGridView grid)
+		{
+			// Получаем индекс выделенной строки
+			int rowIndex = grid.CurrentCell?.RowIndex ?? grid.Rows.Count - 1;
 
-            // Получаем базовую формулу в зависимости от водоизмещения
-            string formula = D <= selectedShip.MaxDisplacement ? selectedShip.FormulaLow : selectedShip.FormulaHigh;
-            string formulaWithReplacements = ReplacePowerOperator(formula, D);
+			// Если есть выделенная строка, вставляем новую строку после неё
+			if (rowIndex >= 0 && rowIndex < grid.Rows.Count)
+			{
+				grid.Rows.Insert(rowIndex + 1);
+				rowIndex++; // Смещаем индекс для работы с новой строкой
+			}
+			else
+			{
+				// Если выделенной строки нет, добавляем новую строку в конец
+				rowIndex = grid.Rows.Add();
+			}
 
-            try
-            {
-                // Вычисляем базовое время
-                double baseResult = CalculateFormula(formulaWithReplacements);
+			// Получаем новую строку
+			DataGridViewRow newRow = grid.Rows[rowIndex];
 
-                // Получаем коэффициент сложности (произведение всех коэффициентов)
-                double totalCoefficient = 1.0;
-                foreach (DataGridViewRow row in coefficientGrid.Rows)
-                {
-                    if (row.Cells[1].Value != null && !string.IsNullOrWhiteSpace(row.Cells[1].Value.ToString()))
-                    {
-                        if (double.TryParse(row.Cells[1].Value.ToString(), out double coef))
-                        {
-                            totalCoefficient *= coef;
-                        }
-                    }
-                }
+			// Устанавливаем значения по умолчанию для новой строки
+			newRow.Cells[0].Value = "";  // Параметр или название работы
+			newRow.Cells[1].Value = 0.0; // Коэффициент или процент
+		}
 
-                // Применяем коэффициент сложности к базовому результату
-                double totalResult = baseResult * totalCoefficient;
+		private void EditShipsButton_Click(object sender, EventArgs e)
+		{
+			EditShipsForm editForm = new EditShipsForm();
+			editForm.ShowDialog();
+		}
+		
+		private void CalculateButton_Click(object sender, EventArgs e)
+		{
+			if (!double.TryParse(DEntry.Text, out double D))
+			{
+				MessageBox.Show("Введите корректное водоизмещение (D).", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-                // Создаем массив для хранения детальных результатов
-                var detailedResults = new List<(string Name, double Percentage, double Hours)>();
+			if (!double.TryParse(HourEntry.Text, out double hourlyRate))
+			{
+				MessageBox.Show("Введите корректную стоимость нормо-часа.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-                // Вычисляем время для каждого вида работ
-                foreach (DataGridViewRow row in percentageGrid.Rows)
-                {
-                    string workName = row.Cells[0].Value?.ToString() ?? "";
-                    if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
-                    {
-                        double hours = totalResult * percentage;
-                        detailedResults.Add((workName, percentage, hours));
-                    }
-                }
+			string shipCode = codeEntry.Text;
+			string shipName = nameEntry.Text;
 
-                // Показываем форму с результатами
-                ResultForm resultForm = new ResultForm(formulaWithReplacements, totalResult, detailedResults.ToArray());
-                resultForm.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error in calculation: {ex.Message}", "Calculation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+			ShipType selectedShip = Program.shipTypes.FirstOrDefault(ship => ship.Code == shipCode || ship.Name == shipName);
+			if (selectedShip == null)
+			{
+				MessageBox.Show("Тип судна не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-        public double CalculateFormula(string formula)
-        {
-            try
-            {
-                System.Data.DataTable table = new System.Data.DataTable();
-                var result = table.Compute(formula, string.Empty);
-                return Convert.ToDouble(result);
-            }
-            catch (Exception ex)
-            {
-                throw new ArgumentException($"Ошибка в формате формулы: {ex.Message}");
-            }
-        }
+			if (string.IsNullOrEmpty(selectedShip.FormulaLow) || string.IsNullOrEmpty(selectedShip.FormulaHigh))
+			{
+				MessageBox.Show("Формулы для выбранного судна не заданы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-        private string ReplacePowerOperator(string formula, double D)
-        {
-            // Подстановка значения D в формулу
-            formula = formula.Replace("D", D.ToString());
+			// Получаем базовую формулу в зависимости от водоизмещения
+			string formula = D <= selectedShip.MaxDisplacement ? selectedShip.FormulaLow : selectedShip.FormulaHigh;
+			string formulaWithReplacements = ReplacePowerOperator(formula, D);
 
-            // Регулярное выражение для поиска выражений "base ^ exponent"
-            string pattern = @"([0-9.]+|[a-zA-Z]+)\s*\^\s*([0-9.]+|[a-zA-Z]+)";
-            formula = Regex.Replace(formula, pattern, match =>
-            {
-                string basePart = match.Groups[1].Value.Trim();
-                string exponentPart = match.Groups[2].Value.Trim();
-                //MessageBox.Show($"Base value (string): {basePart}");
-                //MessageBox.Show($"Exponent value (string): {exponentPart}");
+			try
+			{
+				// Вычисляем базовое время
+				double baseResult = CalculateFormula(formulaWithReplacements);
 
-                // Проверяем, являются ли basePart и exponentPart числами
-                bool isBaseNumeric = double.TryParse(basePart, out double baseValue);
-                bool isExponentNumeric = double.TryParse(exponentPart, NumberStyles.Any, CultureInfo.InvariantCulture, out double exponentValue);
+				// Получаем коэффициент сложности (произведение всех коэффициентов)
+				double totalCoefficient = 1.0;
+				foreach (DataGridViewRow row in coefficientGrid.Rows)
+				{
+					if (row.Cells[1].Value != null && !string.IsNullOrWhiteSpace(row.Cells[1].Value.ToString()))
+					{
+						if (double.TryParse(row.Cells[1].Value.ToString(), out double coef))
+						{
+							totalCoefficient *= coef;
+						}
+					}
+				}
 
-                // Проверка результатов парсинга
-                //MessageBox.Show($"Base value (double): {baseValue}");
-                //MessageBox.Show($"Exponent value (double): {exponentValue}");
-                //MessageBox.Show($"Is base numeric? {isBaseNumeric}");
-                //MessageBox.Show($"Is exponent numeric? {isExponentNumeric}");
+				// Применяем коэффициент сложности к базовому результату
+				double totalResult = baseResult * totalCoefficient;
+				double totalCost = 0.0;
+				
+				// Создаем массив для хранения детальных результатов
+				var detailedResults = new List<(string Name, double Percentage, double Hours, double Price)>();
 
-                if (isBaseNumeric && isExponentNumeric)
-                {
-                    // Если оба значения числовые, вычисляем Math.Pow и возвращаем результат
-                    double result = Math.Pow(baseValue, exponentValue);
-                    return result.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    // Если одно из значений не числовое (например, если basePart — переменная), оставляем Math.Pow() в формуле
-                    return $"Math.Pow({basePart}, {exponentPart})";
-                }
-            });
-            //MessageBox.Show($"Результат после ReplacePowerOperator: {formula}");
+				// Вычисляем время для каждого вида работ
+				foreach (DataGridViewRow row in percentageGrid.Rows)
+				{
+					string workName = row.Cells[0].Value?.ToString() ?? "";
+					if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
+					{
+						double hours = totalResult * percentage;
+						double price = hours * hourlyRate; // Используем пользовательскую стоимость нормо-часа
+						totalCost += price;
+						detailedResults.Add((workName, percentage, hours, price));
+					}
+				}
 
-            return formula;
-        }
-    }
+				// Показываем форму с результатами
+				ResultForm resultForm = new ResultForm(formulaWithReplacements, totalResult, totalCost, detailedResults.ToArray());
+				resultForm.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка при расчете: {ex.Message}", "Ошибка расчета", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		public double CalculateFormula(string formula)
+		{
+			try
+			{
+				System.Data.DataTable table = new System.Data.DataTable();
+				var result = table.Compute(formula, string.Empty);
+				return Convert.ToDouble(result);
+			}
+			catch (Exception ex)
+			{
+				throw new ArgumentException($"Ошибка в формате формулы: {ex.Message}");
+			}
+		}
+
+		private string ReplacePowerOperator(string formula, double D)
+		{
+			// Подстановка значения D в формулу
+			formula = formula.Replace("D", D.ToString());
+
+			// Регулярное выражение для поиска выражений "base ^ exponent"
+			string pattern = @"([0-9.]+|[a-zA-Z]+)\s*\^\s*([0-9.]+|[a-zA-Z]+)";
+			formula = Regex.Replace(formula, pattern, match =>
+			{
+				string basePart = match.Groups[1].Value.Trim();
+				string exponentPart = match.Groups[2].Value.Trim();
+				//MessageBox.Show($"Base value (string): {basePart}");
+				//MessageBox.Show($"Exponent value (string): {exponentPart}");
+
+				// Проверяем, являются ли basePart и exponentPart числами
+				bool isBaseNumeric = double.TryParse(basePart, out double baseValue);
+				bool isExponentNumeric = double.TryParse(exponentPart, NumberStyles.Any, CultureInfo.InvariantCulture, out double exponentValue);
+
+				// Проверка результатов парсинга
+				//MessageBox.Show($"Base value (double): {baseValue}");
+				//MessageBox.Show($"Exponent value (double): {exponentValue}");
+				//MessageBox.Show($"Is base numeric? {isBaseNumeric}");
+				//MessageBox.Show($"Is exponent numeric? {isExponentNumeric}");
+
+				if (isBaseNumeric && isExponentNumeric)
+				{
+					// Если оба значения числовые, вычисляем Math.Pow и возвращаем результат
+					double result = Math.Pow(baseValue, exponentValue);
+					return result.ToString(CultureInfo.InvariantCulture);
+				}
+				else
+				{
+					// Если одно из значений не числовое (например, если basePart — переменная), оставляем Math.Pow() в формуле
+					return $"Math.Pow({basePart}, {exponentPart})";
+				}
+			});
+			//MessageBox.Show($"Результат после ReplacePowerOperator: {formula}");
+
+			return formula;
+		}
+	}
 }
