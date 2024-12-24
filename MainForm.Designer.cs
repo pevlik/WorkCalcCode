@@ -6,25 +6,19 @@ namespace EffortCalculator
 {
     partial class MainForm
     {
-        private Label DLabel;
-        private TextBox DEntry;
-        private Label HourLabel;
-        private TextBox HourEntry;
-        private Label CodeLabel;
+        private Label DLabel, HourLabel, CodeLabel, NameLabel;
+        private TextBox DEntry, HourEntry;
         private ComboBox codeEntry;
-        private Label NameLabel;
         private ComboBox nameEntry;
-        private Label resultLabel;
-        private Label coefficientLabel;
-        private DataGridView coefficientGrid;
-        private Button addRowButton1;
-        private Button addRowButton2;
-        private Button deleteRowButton1;
-        private Button deleteRowButton2;
-        private Label percentageLabel;
-        private DataGridView percentageGrid;
-        private Button calculateButton;
-        private Button editShipsButton;
+        private Label resultLabel, coefficientLabel;
+        private DataGridView coefficientGrid, EskPrGrid, TechPrGrid, PDSPGrid, DevWorkDesDocGrid;
+        private Button addRowButton1, addRowButton2, addRowButton3, addRowButton4, addRowButton5;
+        private Button deleteRowButton1, deleteRowButton2, deleteRowButton3, deleteRowButton4, deleteRowButton5;
+        private Label EskPr; // Эскизный проект
+        private Label TechPr; // Технический проект
+        private Label PDSP; // ПДСП
+        private Label DevWorkDesDoc; // Разработка рабочей конструкторской документации
+        private Button calculateButton, editShipsButton;
 
         private void InitializeComponent()
         {
@@ -63,24 +57,113 @@ namespace EffortCalculator
             this.deleteRowButton1 = new Button { Text = "-", Width = 60 };
             this.deleteRowButton1.Click += new EventHandler(this.DeleteRowButton1_Click);
 
-            this.percentageLabel = new Label { Text = "Процентное соотношение работ", AutoSize = true };
-            this.percentageGrid = new DataGridView
+            // Панель % соотношения работ Эскизный проект
+            this.EskPr = new Label { Text = "Эскизный проект", AutoSize = true };
+            this.EskPrGrid = new DataGridView
             {
                 ColumnCount = 2,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 Columns = {
-                    [0] = { Name = "Вид работ", HeaderText = "Вид работ" },
-                    [1] = { Name = "Процент", HeaderText = "Процент" }
+                    [0] = { Name = "Параметр", HeaderText = "Параметр" },
+                    [1] = { Name = "Коэффициент", HeaderText = "Коэффициент" }
                 },
                 AllowUserToAddRows = false,
                 Width = 300,
                 Height = 150
             };
+
+            this.EskPrGrid.Rows.Add("Эскизный проект(Документация)", "0.05");
+            this.EskPrGrid.Rows.Add("3D модель", "0.15");
+            this.EskPrGrid.Rows.Add("ИТТ", "0.035");
+            this.EskPrGrid.Rows.Add("Согласование ТС", "0.055");
+
             this.addRowButton2 = new Button { Text = "+", Width = 60 };
             this.addRowButton2.Click += new EventHandler(this.AddRowButton2_Click);
 
-            this.deleteRowButton2 = new Button { Text = "-", Width = 60};
+            this.deleteRowButton2 = new Button { Text = "-", Width = 60 };
             this.deleteRowButton2.Click += new EventHandler(this.DeleteRowButton2_Click);
+
+            // Панель % соотношения работ Технический проект
+            this.TechPr = new Label { Text = "Технический проект", AutoSize = true };
+            this.TechPrGrid = new DataGridView
+            {
+                ColumnCount = 2,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                Columns = {
+                    [0] = { Name = "Параметр", HeaderText = "Параметр" },
+                    [1] = { Name = "Коэффициент", HeaderText = "Коэффициент" }
+                },
+                AllowUserToAddRows = false,
+                Width = 300,
+                Height = 150
+            };
+
+            this.TechPrGrid.Rows.Add("Технический проект(документация)", "0.20");
+            this.TechPrGrid.Rows.Add("3D модель", "0.36");
+            this.TechPrGrid.Rows.Add("ИТТ", "0.065");
+            this.TechPrGrid.Rows.Add("Согласование ТС", "0.088");
+
+            this.addRowButton3 = new Button { Text = "+", Width = 60 };
+            this.addRowButton3.Click += new EventHandler(this.AddRowButton3_Click);
+
+            this.deleteRowButton3 = new Button { Text = "-", Width = 60 };
+            this.deleteRowButton3.Click += new EventHandler(this.DeleteRowButton3_Click);
+
+            // Панель % соотношения работ ПДСП
+            this.PDSP = new Label { Text = "ПДСП", AutoSize = true };
+            this.PDSPGrid = new DataGridView
+            {
+                ColumnCount = 2,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                Columns = {
+                    [0] = { Name = "Параметр", HeaderText = "Параметр" },
+                    [1] = { Name = "Коэффициент", HeaderText = "Коэффициент" }
+                },
+                AllowUserToAddRows = false,
+                Width = 300,
+                Height = 150
+            };
+
+            this.PDSPGrid.Rows.Add("ПДСП(Документация)", "");
+            this.PDSPGrid.Rows.Add("3D модель", "0.34");
+            this.PDSPGrid.Rows.Add("ИТТ", "0.055");
+            this.PDSPGrid.Rows.Add("Согласование ТС", "0.088");
+
+            this.addRowButton4 = new Button { Text = "+", Width = 60 };
+            this.addRowButton4.Click += new EventHandler(this.AddRowButton4_Click);
+
+            this.deleteRowButton4 = new Button { Text = "-", Width = 60 };
+            this.deleteRowButton4.Click += new EventHandler(this.DeleteRowButton4_Click);
+
+            //Панель % соотношения работ Разработка рабочей конструкторской документации
+            this.DevWorkDesDoc = new Label { Text = "Разработка рабочей конструкторской документации", AutoSize = true };
+            this.DevWorkDesDocGrid = new DataGridView
+            {
+                ColumnCount = 2,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                Columns = {
+                    [0] = { Name = "Параметр", HeaderText = "Параметр" },
+                    [1] = { Name = "Коэффициент", HeaderText = "Коэффициент" }
+                },
+                AllowUserToAddRows = false,
+                Width = 300,
+                Height = 150
+            };
+
+            this.DevWorkDesDocGrid.Rows.Add("Разработка рабочей КД", "0.75");
+            this.DevWorkDesDocGrid.Rows.Add("3D модель", "0.15");
+            this.DevWorkDesDocGrid.Rows.Add("Согласование ТС", "0.088");
+            this.DevWorkDesDocGrid.Rows.Add("Документация ПТД", "0.1");
+            this.DevWorkDesDocGrid.Rows.Add("Документация ЭД", "0.09");
+            this.DevWorkDesDocGrid.Rows.Add("Документация ПСД", "0.06");
+            this.DevWorkDesDocGrid.Rows.Add("Корректировка ПДСП по результатам разработки РКД и выбора оборудования и материалов", "0.21");
+            
+
+            this.addRowButton5 = new Button { Text = "+", Width = 60 };
+            this.addRowButton5.Click += new EventHandler(this.AddRowButton5_Click);
+
+            this.deleteRowButton5 = new Button { Text = "-", Width = 60 };
+            this.deleteRowButton5.Click += new EventHandler(this.DeleteRowButton5_Click);
 
             var entryPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
             var hourPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
@@ -88,7 +171,10 @@ namespace EffortCalculator
             var namePanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
 
             var coefficientButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
-            var percentageButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
+            var EskPrButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
+            var TechPrButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
+            var PdspButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
+            var DevWorkDesDocButtonsPanel = new FlowLayoutPanel { FlowDirection = FlowDirection.LeftToRight, AutoSize = true };
 
             // Добавляем кнопки в соответствующие панели
             entryPanel.Controls.Add(this.DLabel);
@@ -106,8 +192,17 @@ namespace EffortCalculator
             coefficientButtonsPanel.Controls.Add(this.addRowButton1);
             coefficientButtonsPanel.Controls.Add(this.deleteRowButton1);
 
-            percentageButtonsPanel.Controls.Add(this.addRowButton2);
-            percentageButtonsPanel.Controls.Add(this.deleteRowButton2);
+            EskPrButtonsPanel.Controls.Add(this.addRowButton2);
+            EskPrButtonsPanel.Controls.Add(this.deleteRowButton2);
+
+            TechPrButtonsPanel.Controls.Add(this.addRowButton3);
+            TechPrButtonsPanel.Controls.Add(this.deleteRowButton3);
+
+            PdspButtonsPanel.Controls.Add(this.addRowButton4);
+            PdspButtonsPanel.Controls.Add(this.deleteRowButton4);
+
+            DevWorkDesDocButtonsPanel.Controls.Add(this.addRowButton5);
+            DevWorkDesDocButtonsPanel.Controls.Add(this.deleteRowButton5);
 
             // Layout setup
             var mainLayout = new TableLayoutPanel { ColumnCount = 2, Dock = DockStyle.Fill, AutoSize = true };
@@ -124,35 +219,34 @@ namespace EffortCalculator
             mainLayout.Controls.Add(namePanel, 0, 3);
             mainLayout.SetColumnSpan(namePanel, 2);
 
-            // mainLayout.Controls.Add(this.DLabel, 0, 0);
-            // mainLayout.Controls.Add(this.DEntry, 1, 0);
-            // mainLayout.Controls.Add(this.HourLabel, 0, 1);
-            // mainLayout.Controls.Add(this.HourEntry, 1, 1);
-            // mainLayout.Controls.Add(this.CodeLabel, 0, 2);
-            // mainLayout.Controls.Add(this.codeEntry, 1, 2);
-            // mainLayout.Controls.Add(this.NameLabel, 0, 3);
-            // mainLayout.Controls.Add(this.nameEntry, 1, 3);
-
+            // Коэффициенты  
             mainLayout.Controls.Add(this.coefficientLabel, 0, 4);
             mainLayout.Controls.Add(this.coefficientGrid, 0, 5);
             mainLayout.Controls.Add(coefficientButtonsPanel, 0, 6);
-            mainLayout.SetColumnSpan(coefficientButtonsPanel, 2); // Чтобы панель заняла оба столбца
 
-            // mainLayout.Controls.Add(this.addRowButton1, 0, 6);
-            // mainLayout.Controls.Add(this.deleteRowButton1, 1, 6);
+            // Эскизны проект
+            mainLayout.Controls.Add(this.EskPr, 0, 7);
+            mainLayout.Controls.Add(this.EskPrGrid, 0, 8);
+            mainLayout.Controls.Add(EskPrButtonsPanel, 0, 9);
 
-            mainLayout.Controls.Add(this.percentageLabel, 0, 7);
-            mainLayout.Controls.Add(this.percentageGrid, 0, 8);
-            mainLayout.Controls.Add(percentageButtonsPanel, 0, 9);
-            mainLayout.SetColumnSpan(percentageButtonsPanel, 2);
+            // Технический проект
+            mainLayout.Controls.Add(this.TechPr, 1, 7);
+            mainLayout.Controls.Add(this.TechPrGrid, 1, 8);
+            mainLayout.Controls.Add(TechPrButtonsPanel, 1, 9);
 
-            // mainLayout.Controls.Add(this.addRowButton2, 0, 9);
-            // mainLayout.Controls.Add(this.deleteRowButton2, 1, 9);
+            // ПДСП
+            mainLayout.Controls.Add(this.PDSP, 0, 13);
+            mainLayout.Controls.Add(this.PDSPGrid, 0, 14);
+            mainLayout.Controls.Add(PdspButtonsPanel, 0, 15);
 
-            mainLayout.Controls.Add(this.calculateButton, 0, 10);
-            mainLayout.Controls.Add(this.editShipsButton, 1, 10);
+            // Разработка рабочей КД
+            mainLayout.Controls.Add(this.DevWorkDesDoc, 1, 13);
+            mainLayout.Controls.Add(this.DevWorkDesDocGrid, 1, 14);
+            mainLayout.Controls.Add(DevWorkDesDocButtonsPanel, 1, 15);
 
-            //mainLayout.Controls.Add(this.resultLabel, 0, 8);
+            // Кнопки рассчета и редактирования списка судов
+            mainLayout.Controls.Add(this.calculateButton, 0, 16);
+            mainLayout.Controls.Add(this.editShipsButton, 1, 16);
 
             this.Controls.Add(mainLayout);
 

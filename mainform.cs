@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace EffortCalculator
 {
@@ -63,7 +64,22 @@ namespace EffortCalculator
 
 		private void DeleteRowButton2_Click(object sender, EventArgs e)
 		{
-			DeleteRowSelected(percentageGrid);
+			DeleteRowSelected(EskPrGrid);
+		}
+
+		private void DeleteRowButton3_Click(object sender, EventArgs e)
+		{
+			DeleteRowSelected(TechPrGrid);
+		}
+
+		private void DeleteRowButton4_Click(object sender, EventArgs e)
+		{
+			DeleteRowSelected(PDSPGrid);
+		}
+
+		private void DeleteRowButton5_Click(object sender, EventArgs e)
+		{
+			DeleteRowSelected(DevWorkDesDocGrid);
 		}
 
 		private void DeleteRowSelected(DataGridView grid)
@@ -85,7 +101,22 @@ namespace EffortCalculator
 		
 		private void AddRowButton2_Click(object sender, EventArgs e)
 		{
-			AddRowAfterSelected(percentageGrid);
+			AddRowAfterSelected(EskPrGrid);
+		}
+
+		private void AddRowButton3_Click(object sender, EventArgs e)
+		{
+			AddRowAfterSelected(TechPrGrid);
+		}
+
+		private void AddRowButton4_Click(object sender, EventArgs e)
+		{
+			AddRowAfterSelected(PDSPGrid);
+		}
+
+		private void AddRowButton5_Click(object sender, EventArgs e)
+		{
+			AddRowAfterSelected(DevWorkDesDocGrid);
 		}
 
 		private void AddRowAfterSelected(DataGridView grid)
@@ -179,7 +210,43 @@ namespace EffortCalculator
 				var detailedResults = new List<(string Name, double Percentage, double Hours, double Price)>();
 
 				// Вычисляем время для каждого вида работ
-				foreach (DataGridViewRow row in percentageGrid.Rows)
+				foreach (DataGridViewRow row in EskPrGrid.Rows)
+				{
+					string workName = row.Cells[0].Value?.ToString() ?? "";
+					if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
+					{
+						double hours = totalResult * percentage;
+						double price = hours * hourlyRate; // Используем пользовательскую стоимость нормо-часа
+						totalCost += price;
+						detailedResults.Add((workName, percentage, hours, price));
+					}
+				}
+
+				foreach (DataGridViewRow row in TechPrGrid.Rows)
+				{
+					string workName = row.Cells[0].Value?.ToString() ?? "";
+					if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
+					{
+						double hours = totalResult * percentage;
+						double price = hours * hourlyRate; // Используем пользовательскую стоимость нормо-часа
+						totalCost += price;
+						detailedResults.Add((workName, percentage, hours, price));
+					}
+				}
+
+				foreach (DataGridViewRow row in PDSPGrid.Rows)
+				{
+					string workName = row.Cells[0].Value?.ToString() ?? "";
+					if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
+					{
+						double hours = totalResult * percentage;
+						double price = hours * hourlyRate; // Используем пользовательскую стоимость нормо-часа
+						totalCost += price;
+						detailedResults.Add((workName, percentage, hours, price));
+					}
+				}
+
+				foreach (DataGridViewRow row in DevWorkDesDocGrid.Rows)
 				{
 					string workName = row.Cells[0].Value?.ToString() ?? "";
 					if (double.TryParse(row.Cells[1].Value?.ToString(), out double percentage))
@@ -226,18 +293,10 @@ namespace EffortCalculator
 			{
 				string basePart = match.Groups[1].Value.Trim();
 				string exponentPart = match.Groups[2].Value.Trim();
-				//MessageBox.Show($"Base value (string): {basePart}");
-				//MessageBox.Show($"Exponent value (string): {exponentPart}");
 
 				// Проверяем, являются ли basePart и exponentPart числами
 				bool isBaseNumeric = double.TryParse(basePart, out double baseValue);
 				bool isExponentNumeric = double.TryParse(exponentPart, NumberStyles.Any, CultureInfo.InvariantCulture, out double exponentValue);
-
-				// Проверка результатов парсинга
-				//MessageBox.Show($"Base value (double): {baseValue}");
-				//MessageBox.Show($"Exponent value (double): {exponentValue}");
-				//MessageBox.Show($"Is base numeric? {isBaseNumeric}");
-				//MessageBox.Show($"Is exponent numeric? {isExponentNumeric}");
 
 				if (isBaseNumeric && isExponentNumeric)
 				{
@@ -251,7 +310,6 @@ namespace EffortCalculator
 					return $"Math.Pow({basePart}, {exponentPart})";
 				}
 			});
-			//MessageBox.Show($"Результат после ReplacePowerOperator: {formula}");
 
 			return formula;
 		}

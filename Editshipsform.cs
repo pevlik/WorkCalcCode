@@ -61,18 +61,8 @@ namespace EffortCalculator
                     HeaderText = "Предел. водоизмещение", 
                     DataPropertyName = "MaxDisplacement"
                 }
-                //new DataGridViewTextBoxColumn { Name = "Code", HeaderText = "Класс", DataPropertyName = "Code", Width = 50 },
-                //new DataGridViewTextBoxColumn { Name = "Name", HeaderText = "Назначение", DataPropertyName = "Name", Width = 450},
-                //new DataGridViewTextBoxColumn { Name = "FormulaLow", HeaderText = "формула для 'D < Водоизмещения'", DataPropertyName = "FormulaLow", Width = 200},
-                //new DataGridViewTextBoxColumn { Name = "FormulaHigh", HeaderText = "формула для 'D > Водоизмещения'", DataPropertyName = "FormulaHigh" , Width = 200},
-                //new DataGridViewTextBoxColumn { Name = "MaxDisplacement", HeaderText = "Предел. водоизмещение", DataPropertyName = "MaxDisplacement" , Width = 100} // Новая колонка
             });
 			this.shipsDataGridView.Dock = DockStyle.Fill;
-            //this.shipsDataGridView.Dock = DockStyle.Top;
-            //this.shipsDataGridView.Location = new System.Drawing.Point(0, 0);
-            //this.shipsDataGridView.Name = "shipsDataGridView";
-            //this.shipsDataGridView.Size = new System.Drawing.Size(484, 400);
-            //this.shipsDataGridView.TabIndex = 0;
 
             // saveButton
             this.saveButton.Text = "Сохранить";
@@ -87,7 +77,6 @@ namespace EffortCalculator
             // EditShipsForm
 			this.ClientSize = new System.Drawing.Size(1200, 600);
             this.MinimumSize = new System.Drawing.Size(800, 400); // Минимальный размер окна
-            //this.ClientSize = new System.Drawing.Size(1200, 400); // Увеличиваем размер, чтобы разместить кнопки (Ширина, Высота)
             this.Controls.Add(this.shipsDataGridView);
             this.Controls.Add(this.deleteButton); // Добавляем кнопку удаления
             this.Controls.Add(this.saveButton);

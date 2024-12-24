@@ -64,7 +64,7 @@ namespace EffortCalculator
                 Name = "include",
                 HeaderText = "Включить",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
-                Width = 50
+                Width = 80
             });
             resultsGrid.Columns.Add("name", "Наименование работы");
             resultsGrid.Columns.Add("percentage", "Процент");
