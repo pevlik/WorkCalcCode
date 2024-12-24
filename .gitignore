@@ -1,0 +1,19 @@
+# Игнорировать все файлы .dll и .exe
+*.dll
+*.exe
+*.csproj
+*.csproj.nupkg
+*.csproj.user
+*.resx
+*.xlsx
+
+bin/
+obj/
+.vs/
+
+# Разрешить все файлы .cs и .json
+!*.cs
+
+!CoefficientData.Json
+!PercentageData.Json
+!ShipTypes.Json
