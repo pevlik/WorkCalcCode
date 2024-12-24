@@ -1,13 +1,17 @@
-Учет трудоемкости_РУМБ (2).xlsx
-bin/Debug/net8.0-windows/EffortCalculator.dll
-bin/Debug/net8.0-windows/EffortCalculator.exe
-bin/Debug/net8.0-windows/EffortCalculator.pdb
-obj/Debug/net8.0-windows/EffortCalculator.AssemblyInfo.cs
-obj/Debug/net8.0-windows/EffortCalculator.AssemblyInfoInputs.cache
-obj/Debug/net8.0-windows/EffortCalculator.dll
-obj/Debug/net8.0-windows/EffortCalculator.pdb
-obj/Debug/net8.0-windows/refint/EffortCalculator.dll
-obj/Debug/net8.0-windows/ref/EffortCalculator.dll
-obj/Debug/net8.0-windows/EffortCalculator.csproj.CoreCompileInputs.cache
-obj/Debug/net8.0-windows/refint/EffortCalculator.dll
+# Игнорировать все файлы .dll и .exe
+*.dll
+*.exe
+*.csproj
+*.csproj.nupkg
+*.csproj.user
 
+bin/
+obj/
+.vs/
+
+# Разрешить все файлы .cs и .json
+!*.cs
+
+!CoefficientData.Json
+!PercentageData.Json
+!ShipTypes.Json
