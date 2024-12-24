@@ -4,6 +4,8 @@
 *.csproj
 *.csproj.nupkg
 *.csproj.user
+*.resx
+*.xlsx
 
 bin/
 obj/
