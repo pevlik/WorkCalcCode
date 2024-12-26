@@ -8,7 +8,7 @@ namespace EffortCalculator
     static class Program
     {
         public static ShipType[] shipTypes;
-        public static string configFile = "shipsData.json";
+        public static string configFile = "jsons/shipsData.json";
 
         [STAThread]
         static void Main()
