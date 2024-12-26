@@ -11,7 +11,7 @@ namespace EffortCalculator
         private DataGridView shipsDataGridView;
         private Button saveButton;
         private Button deleteButton; // Кнопка удаления
-        private const string DataFilePath = "shipsData.json"; // путь к файлу данных
+        private const string DataFilePath = "jsons/shipsData.json"; // путь к файлу данных
 
         public EditShipsForm()
         {

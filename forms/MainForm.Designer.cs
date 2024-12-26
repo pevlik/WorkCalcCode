@@ -10,15 +10,18 @@ namespace EffortCalculator
         private TextBox DEntry, HourEntry;
         private ComboBox codeEntry;
         private ComboBox nameEntry;
-        private Label resultLabel, coefficientLabel;
-        private DataGridView coefficientGrid, EskPrGrid, TechPrGrid, PDSPGrid, DevWorkDesDocGrid;
+        private Label resultLabel;
+        //private Label coefficientLabel;
+        private DataGridView EskPrGrid, TechPrGrid, PDSPGrid, DevWorkDesDocGrid;
+        //private DataGridView coefficientGrid;
         private Button addRowButton1, addRowButton2, addRowButton3, addRowButton4, addRowButton5;
         private Button deleteRowButton1, deleteRowButton2, deleteRowButton3, deleteRowButton4, deleteRowButton5;
         private Label EskPr; // Эскизный проект
         private Label TechPr; // Технический проект
         private Label PDSP; // ПДСП
         private Label DevWorkDesDoc; // Разработка рабочей конструкторской документации
-        private Button calculateButton, editShipsButton;
+        private Button calculateButton, editShipsButton, coefficientsButton;
+        private DataGridView selectedCoefficientsGridView;
 
         private void InitializeComponent()
         {
@@ -38,8 +41,10 @@ namespace EffortCalculator
             this.editShipsButton.Click += new EventHandler(this.EditShipsButton_Click);
             this.resultLabel = new Label { Text = "Результат: ", AutoSize = true };
 
-            this.coefficientLabel = new Label { Text = "Коэффициенты", AutoSize = true };
-            this.coefficientGrid = new DataGridView
+            this.coefficientsButton = new Button { Text = "Коэффициенты", Width = 120 };
+            this.coefficientsButton.Click += new EventHandler(this.CoefficientsButton_Click);
+
+            this.selectedCoefficientsGridView = new DataGridView
             {
                 ColumnCount = 2,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
@@ -51,8 +56,22 @@ namespace EffortCalculator
                 Width = 300,
                 Height = 150
             };
-            this.addRowButton1 = new Button { Text = "+", Width = 60 };
-            this.addRowButton1.Click += new EventHandler(this.AddRowButton1_Click);
+
+            // this.coefficientLabel = new Label { Text = "Коэффициенты", AutoSize = true };
+            // this.coefficientGrid = new DataGridView
+            // {
+            //     ColumnCount = 2,
+            //     AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+            //     Columns = {
+            //         [0] = { Name = "Параметр", HeaderText = "Параметр" },
+            //         [1] = { Name = "Коэффициент", HeaderText = "Коэффициент" }
+            //     },
+            //     AllowUserToAddRows = false,
+            //     Width = 300,
+            //     Height = 150
+            // };
+            // this.addRowButton1 = new Button { Text = "+", Width = 60 };
+            // this.addRowButton1.Click += new EventHandler(this.AddRowButton1_Click);
 
             this.deleteRowButton1 = new Button { Text = "-", Width = 60 };
             this.deleteRowButton1.Click += new EventHandler(this.DeleteRowButton1_Click);
@@ -189,7 +208,7 @@ namespace EffortCalculator
             namePanel.Controls.Add(this.NameLabel);
             namePanel.Controls.Add(this.nameEntry);
 
-            coefficientButtonsPanel.Controls.Add(this.addRowButton1);
+            coefficientButtonsPanel.Controls.Add(this.coefficientsButton);
             coefficientButtonsPanel.Controls.Add(this.deleteRowButton1);
 
             EskPrButtonsPanel.Controls.Add(this.addRowButton2);
@@ -219,10 +238,14 @@ namespace EffortCalculator
             mainLayout.Controls.Add(namePanel, 0, 3);
             mainLayout.SetColumnSpan(namePanel, 2);
 
-            // Коэффициенты  
-            mainLayout.Controls.Add(this.coefficientLabel, 0, 4);
-            mainLayout.Controls.Add(this.coefficientGrid, 0, 5);
+            // Коэффициенты
+            mainLayout.Controls.Add(this.selectedCoefficientsGridView, 0, 4);
             mainLayout.Controls.Add(coefficientButtonsPanel, 0, 6);
+
+            // // Коэффициенты  
+            // mainLayout.Controls.Add(this.coefficientLabel, 0, 4);
+            // mainLayout.Controls.Add(this.coefficientGrid, 0, 5);
+            // 
 
             // Эскизны проект
             mainLayout.Controls.Add(this.EskPr, 0, 7);

@@ -33,6 +33,21 @@ namespace EffortCalculator
 			nameEntry.Enter += (sender, e) => nameEntry.DroppedDown = true;
 		}
 
+		private void CoefficientsButton_Click(object sender, EventArgs e)
+        {
+            using (var form = new CoefficientsForm())
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    selectedCoefficientsGridView.Rows.Clear();
+                    foreach (var coefficient in form.SelectedCoefficients)
+                    {
+                        selectedCoefficientsGridView.Rows.Add(coefficient.Name, coefficient.Coefficient);
+                    }
+                }
+            }
+        }
+
 		private void CodeEntry_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			// Получаем выбранный код
@@ -59,7 +74,7 @@ namespace EffortCalculator
 
 		private void DeleteRowButton1_Click(object sender, EventArgs e)
 		{
-			DeleteRowSelected(coefficientGrid);
+			DeleteRowSelected(selectedCoefficientsGridView);
 		}
 
 		private void DeleteRowButton2_Click(object sender, EventArgs e)
@@ -92,12 +107,7 @@ namespace EffortCalculator
 				grid.Rows.RemoveAt(rowIndex);
 			}
 
-		}
-
-		private void AddRowButton1_Click(object sender, EventArgs e)
-		{
-			AddRowAfterSelected(coefficientGrid);
-		}		
+		}	
 		
 		private void AddRowButton2_Click(object sender, EventArgs e)
 		{
@@ -191,7 +201,7 @@ namespace EffortCalculator
 
 				// Получаем коэффициент сложности (произведение всех коэффициентов)
 				double totalCoefficient = 1.0;
-				foreach (DataGridViewRow row in coefficientGrid.Rows)
+				foreach (DataGridViewRow row in selectedCoefficientsGridView.Rows)
 				{
 					if (row.Cells[1].Value != null && !string.IsNullOrWhiteSpace(row.Cells[1].Value.ToString()))
 					{
